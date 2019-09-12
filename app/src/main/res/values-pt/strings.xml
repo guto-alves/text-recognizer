@@ -3,4 +3,5 @@
     <string name="app_name">Reconhecedor de Texto</string>
     <string name="select_image">Selecione a imagem</string>
     <string name="result">Resultado</string>
+    <string name="processing_image">Processando Imagem…</string>
 </resources>

@@ -33,12 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText resultEditText;
     private String result;
 
-    private ImageButton saveImageButton;
     private ImageButton detectTextImageButton;
-
+    private ImageButton saveImageButton;
     private ImageButton editImageButton;
-
-    private boolean newImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageView);
         resultEditText = findViewById(R.id.resultEditText);
-
         detectTextImageButton = findViewById(R.id.detectTextImageButton);
         saveImageButton = findViewById(R.id.saveImageButton);
         editImageButton = findViewById(R.id.editImageButton);
+
+        detectTextImageButton.setEnabled(false);
         saveImageButton.setEnabled(false);
     }
 
@@ -65,23 +63,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void detect(View view) {
-        if (newImage) {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.dialog_loading);
-            dialog.show();
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_processing);
+        dialog.show();
 
-            FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
-            FirebaseVisionTextRecognizer textRecognizer = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+        FirebaseVisionTextRecognizer textRecognizer = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
 
-            textRecognizer.processImage(image).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-                @Override
-                public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                    processText(firebaseVisionText);
-                    dialog.dismiss();
-                }
-            });
-        }
+        textRecognizer.processImage(image).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+            @Override
+            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                processText(firebaseVisionText);
+                dialog.dismiss();
+            }
+        });
+
+        detectTextImageButton.setEnabled(false);
+        saveImageButton.setEnabled(true);
     }
 
     private void processText(FirebaseVisionText firebaseVisionText) {
@@ -96,23 +95,18 @@ public class MainActivity extends AppCompatActivity {
 
         result = lines.toString();
         resultEditText.setText(result);
-
-        newImage = false;
-        detectTextImageButton.setImageResource(R.drawable.ic_autorenew_gray_24dp);
-        saveImageButton.setImageResource(R.drawable.ic_save_24dp);
-        saveImageButton.setEnabled(true);
     }
 
     public void save(View view) {
     }
 
     public void edit(View view) {
-        if (resultEditText.isEnabled())
-            editImageButton.setImageResource(R.drawable.ic_mode_edit_gray_24dp);
-        else
-            editImageButton.setImageResource(R.drawable.ic_mode_edit_24dp);
-
         resultEditText.setEnabled(!resultEditText.isEnabled());
+
+        if (resultEditText.isEnabled())
+            editImageButton.setImageResource(R.drawable.ic_mode_edit_24dp);
+        else
+            editImageButton.setImageResource(R.drawable.ic_mode_edit_gray_24dp);
     }
 
     public void copy(View view) {
@@ -136,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 imageView.setImageBitmap(bitmap);
-                newImage = true;
-                detectTextImageButton.setImageResource(R.drawable.ic_autorenew_24dp);
+
+                detectTextImageButton.setEnabled(true);
             } catch (IOException e) {
                 e.printStackTrace();
             }

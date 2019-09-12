@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:onClick="save"
-                        app:srcCompat="@drawable/ic_save_gray_24dp" />
+                        app:srcCompat="@drawable/selector_save_button" />
 
                     <ImageButton
                         android:id="@+id/detectTextImageButton"
@@ -112,7 +112,7 @@
                         android:layout_marginLeft="24dp"
                         android:background="@android:color/transparent"
                         android:onClick="detect"
-                        app:srcCompat="@drawable/ic_autorenew_gray_24dp" />
+                        app:srcCompat="@drawable/selector_process_image_button" />
                 </LinearLayout>
 
                 <ScrollView
@@ -152,7 +152,6 @@
                         android:background="@android:color/transparent"
                         android:onClick="edit"
                         app:srcCompat="@drawable/ic_mode_edit_gray_24dp" />
-
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
