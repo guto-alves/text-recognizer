@@ -4,4 +4,9 @@
     <string name="select_image">Selecione a imagem</string>
     <string name="result">Resultado</string>
     <string name="processing_image">Processando Imagem…</string>
+    <string name="open_the_camera">Abrir a câmera</string>
+    <string name="open_the_gallery">Abrir a galeria</string>
+    <string name="recognize_text_button">Reconhecer texto</string>
+    <string name="text_ocupied">Texto copiado</string>
+    <string name="image_to_be_processed">Imagem a ser processada</string>
 </resources>

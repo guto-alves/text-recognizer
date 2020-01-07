@@ -3,4 +3,9 @@
     <string name="result">Result</string>
     <string name="select_image">Select image</string>
     <string name="processing_image">Processing image…</string>
+    <string name="open_the_camera">Open the camera</string>
+    <string name="open_the_gallery">Open the gallery</string>
+    <string name="recognize_text_button">Recognize text button</string>
+    <string name="text_ocupied">Text ocupied</string>
+    <string name="image_to_be_processed">Image to be processed</string>
 </resources>
