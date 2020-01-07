@@ -114,8 +114,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:enabled="@{viewmodel.recognizedText.isEmpty() ? false : true}"
-                            android:onClick="@{() -> viewmodel.save()}"
+                            android:contentDescription="@string/save_recogized_text_to_a_txt_file"
+                            android:enabled="@{viewmodel.recognizedText.isEmpty()? false : true}"
+                            android:onClick="save"
                             app:srcCompat="@drawable/selector_save_button" />
 
                         <ImageButton
@@ -143,7 +144,7 @@
                             android:enabled="@{viewmodel.editMode}"
                             android:inputType="textMultiLine"
                             android:padding="3dp"
-                            android:text="@{viewmodel.recognizedText}"
+                            android:text="@={viewmodel.recognizedText}"
                             android:textColor="@android:color/white"
                             android:textSize="20sp" />
                     </ScrollView>

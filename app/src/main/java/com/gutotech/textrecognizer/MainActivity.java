@@ -1,11 +1,16 @@
 package com.gutotech.textrecognizer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_IMAGE_GET = 2;
+    static final int REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +49,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mViewModel.getShowToast().observe(this, resId -> {
-            if (resId != -1) {
+            if (resId != -1)
                 Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show();
-            }
         });
     }
 
@@ -55,8 +61,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openGallery(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(intent, 2);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        if (intent.resolveActivity(getPackageManager()) != null)
+            startActivityForResult(intent, REQUEST_IMAGE_GET);
+    }
+
+    public void save(View view) {
+        if (hasPermission()) {
+            mViewModel.save();
+        }
+    }
+
+    private boolean hasPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return true;
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
+
+        return false;
     }
 
     @Override
@@ -68,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap bitmap = null;
                 if (requestCode == REQUEST_IMAGE_CAPTURE)
                     bitmap = (Bitmap) data.getExtras().get("data");
-                else if (requestCode == 2) {
+                else if (requestCode == REQUEST_IMAGE_GET) {
                     Uri uri = data.getData();
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 }
@@ -77,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                mViewModel.save();
         }
     }
 }

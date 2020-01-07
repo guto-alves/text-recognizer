@@ -8,4 +8,6 @@
     <string name="recognize_text_button">Recognize text button</string>
     <string name="text_ocupied">Text ocupied</string>
     <string name="image_to_be_processed">Image to be processed</string>
+    <string name="saved_text">Saved text</string>
+    <string name="save_recogized_text_to_a_txt_file">Save recogized text to a txt file</string>
 </resources>

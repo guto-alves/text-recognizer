@@ -14,8 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<Bitmap> bitmap = new MutableLiveData<>();
 
-    private MutableLiveData<String> _recognizedText = new MutableLiveData<>();
-    public LiveData<String> recognizedText;
+    public MutableLiveData<String> recognizedText = new MutableLiveData<>("");
 
     public MutableLiveData<Boolean> editMode = new MutableLiveData<>(false);
 
@@ -31,8 +30,6 @@ public class MainViewModel extends AndroidViewModel {
         mApplication = application;
 
         mRepository = TextRecognizerRepository.getInstance();
-
-        recognizedText = _recognizedText;
     }
 
     public LiveData<Bitmap> getBitmap() {
@@ -48,15 +45,17 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void recognizeText() {
-        _recognizedText.setValue("...");
+        recognizedText.setValue("...");
 
         mRepository.recognizeText(bitmap.getValue(), text -> {
-            _recognizedText.setValue(text);
+            recognizedText.setValue(text);
         });
     }
 
     public void save() {
-        mRepository.save();
+        mRepository.save(recognizedText.getValue());
+        showToast.setValue(R.string.saved_text);
+        showToast.setValue(-1);
     }
 
     public void changeEditMode() {

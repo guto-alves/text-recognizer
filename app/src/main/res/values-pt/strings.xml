@@ -9,4 +9,6 @@
     <string name="recognize_text_button">Reconhecer texto</string>
     <string name="text_ocupied">Texto copiado</string>
     <string name="image_to_be_processed">Imagem a ser processada</string>
+    <string name="saved_text">Texto salvo</string>
+    <string name="save_recogized_text_to_a_txt_file">Salva texto reconhecido em um arquivo txt</string>
 </resources>
