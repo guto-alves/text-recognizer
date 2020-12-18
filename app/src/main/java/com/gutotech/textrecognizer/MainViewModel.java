@@ -12,24 +12,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class MainViewModel extends AndroidViewModel {
-    private MutableLiveData<Bitmap> bitmap = new MutableLiveData<>();
+    private final MutableLiveData<Bitmap> bitmap = new MutableLiveData<>();
 
     public MutableLiveData<String> recognizedText = new MutableLiveData<>("");
 
     public MutableLiveData<Boolean> editMode = new MutableLiveData<>(false);
 
-    private MutableLiveData<Integer> showToast = new MutableLiveData<>(-1);
+    private final MutableLiveData<Integer> showToast = new MutableLiveData<>(-1);
 
-    private TextRecognizerRepository mRepository;
+    private final MLKitVisionImage mlKitVisionImage = new MLKitVisionImage();
 
-    private Application mApplication;
+    private final Application mApplication;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-
         mApplication = application;
-
-        mRepository = TextRecognizerRepository.getInstance();
     }
 
     public LiveData<Bitmap> getBitmap() {
@@ -47,13 +44,11 @@ public class MainViewModel extends AndroidViewModel {
     public void recognizeText() {
         recognizedText.setValue("...");
 
-        mRepository.recognizeText(bitmap.getValue(), text -> {
-            recognizedText.setValue(text);
-        });
+        mlKitVisionImage.recognizeText(bitmap.getValue(), recognizedText::setValue);
     }
 
     public void save() {
-        mRepository.save(recognizedText.getValue());
+        mlKitVisionImage.save(recognizedText.getValue());
         showToast.setValue(R.string.saved_text);
         showToast.setValue(-1);
     }
