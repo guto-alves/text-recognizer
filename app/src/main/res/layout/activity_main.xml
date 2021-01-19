@@ -6,25 +6,24 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.gutotech.textrecognizer.MainViewModel" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        tools:context=".MainActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:context=".MainActivity">
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
-                app:cardBackgroundColor="@android:color/white"
                 app:cardElevation="10dp">
 
                 <LinearLayout
@@ -44,7 +43,7 @@
                             android:layout_weight="1"
                             android:text="@string/select_image"
                             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            android:textColor="@color/colorPrimary" />
+                            android:textColor="@color/blue" />
 
                         <ImageButton
                             android:layout_width="wrap_content"
@@ -67,6 +66,7 @@
                         android:id="@+id/divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginBottom="2dp"
                         android:background="?android:attr/listDivider" />
 
                     <ImageView
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardBackgroundColor="@color/blue"
                 app:cardCornerRadius="3dp"
                 app:cardUseCompatPadding="true">
 
@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/save_recogized_text_to_a_txt_file"
-                            android:enabled="@{viewmodel.recognizedText.isEmpty()? false : true}"
+                            android:enabled="@{viewModel.recognizedText.isEmpty()? false : true}"
                             android:onClick="save"
                             app:srcCompat="@drawable/selector_save_button" />
 
@@ -127,8 +127,8 @@
                             android:layout_marginLeft="24dp"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/recognize_text_button"
-                            android:enabled="@{viewmodel.bitmap == null? false : true}"
-                            android:onClick="@{() -> viewmodel.recognizeText()}"
+                            android:enabled="@{viewModel.bitmap == null? false : true}"
+                            android:onClick="@{() -> viewModel.recognizeText()}"
                             app:srcCompat="@drawable/selector_process_image_button" />
                     </LinearLayout>
 
@@ -140,11 +140,12 @@
                             android:id="@+id/resultEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorPrimary"
-                            android:enabled="@{viewmodel.editMode}"
+                            android:autofillHints="@string/result"
+                            android:background="@color/blue"
+                            android:enabled="@{viewModel.editMode}"
                             android:inputType="textMultiLine"
                             android:padding="3dp"
-                            android:text="@={viewmodel.recognizedText}"
+                            android:text="@={viewModel.recognizedText}"
                             android:textColor="@android:color/white"
                             android:textSize="20sp" />
                     </ScrollView>
@@ -161,15 +162,16 @@
                             android:layout_marginEnd="24dp"
                             android:layout_marginRight="24dp"
                             android:background="@android:color/transparent"
-                            android:onClick="@{() -> viewmodel.copy()}"
+                            android:contentDescription="@string/copy_text"
+                            android:onClick="copy"
                             app:srcCompat="@drawable/ic_content_copy_white_24dp" />
 
                         <ImageButton
                             android:id="@+id/editImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@{viewmodel.editMode ? @drawable/ic_mode_edit_24dp : @drawable/ic_mode_edit_gray_24dp}"
-                            android:onClick="@{() -> viewmodel.changeEditMode()}" />
+                            android:background="@{viewModel.editMode ? @drawable/ic_mode_edit_24dp : @drawable/ic_mode_edit_gray_24dp}"
+                            android:onClick="@{() -> viewModel.changeEditMode()}" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
